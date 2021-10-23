@@ -40,13 +40,13 @@ userSchema.methods.generateJWT = () => {
 }
 
 const validatedUser = user => {
-    const schema = joi({
+    const schema = joi.object({
         name: joi.string().min(3).max(100).required(),
         email: joi.string().min(5).max(255).required(),
         password: joi.string().min(5).max(255).required(),
     });
     return schema.validate(user)
 }
-module.exports.User = ('User', userSchema);
+module.exports.User = model('User', userSchema);
 module.exports.validate = validatedUser;
 

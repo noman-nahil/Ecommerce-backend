@@ -5,10 +5,10 @@ const { signIn, signUp } = require('../controllers/userControllers')
 
 
 
-router.route('/singup')
+router.route('/signup')
     .post(signUp)
 
-router.route('/singin')
+router.route('/signin')
     .post(signIn)
 
 module.exports = router;

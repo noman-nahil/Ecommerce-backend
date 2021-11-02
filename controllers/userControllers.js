@@ -26,6 +26,7 @@ module.exports.signUp = async (req, res) => {
 
 //SIGNIN
 module.exports.signIn = async (req, res) => {
+    console.log(req.body);
     let user = await User.findOne({ email: req.body.email });
     if (!user) return res.status(400).send("Invalid or password");
     const validUser = await bcrypt.compare(req.body.password, user.password);

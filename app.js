@@ -14,6 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
+
 app.use(process.env.URL, userRouter);
 app.use('/api/category', categoryRouter);
 app.use('/api/product', productRouter);

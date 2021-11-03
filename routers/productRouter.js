@@ -4,7 +4,8 @@ const {
     createProduct,
     getProducts,
     getProductById,
-    updateProductById } = require('../controllers/productControllers');
+    updateProductById
+} = require('../controllers/productControllers');
 const admin = require('../middleware/admin');
 const authorize = require('../middleware/authorize');
 

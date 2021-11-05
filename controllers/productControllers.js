@@ -9,16 +9,20 @@ module.exports.createProduct = async (req, res) => {
     let form = new formidable.IncomingForm();
     form.keepExtensions = true;
     form.parse(req, (err, fields, files) => {
-        if (err) return res.status(400).send("something went wrong!");
+
+        if (err) return res.status(400).send("something went wrong2!");
         const { error } = validate(_.pick(fields, ["name", "description", "price", "category", "quantity"]));
         if (error) return res.status(400).send(error.details[0].message);
         const product = new Product(fields);
 
         if (files.photo) {
-            fs.readFile(files.photo.path, (err, data) => {
+            console.log(files.photo)
+            //console.log("From files.photo " + files.photo.filepath)
+            fs.readFile(files.photo.filepath, (err, data) => {
                 if (err) return res.status(400).send("Problem in file data");
                 product.photo.data = data;
-                product.photo.contentType = files.photo.type;
+                product.photo.contentType = files.photo.mimetype;
+                console.log(product)
                 product.save((err, result) => {
                     if (err) return res.status(500).send("Internal Server error!");
                     else return res.status(201).send({
@@ -36,7 +40,9 @@ module.exports.createProduct = async (req, res) => {
 
 //get-product 
 module.exports.getProducts = async (req, res) => {
-
+    const products = await Product.find()
+        .select({ photo: 0 });
+    return res.status(200).send(products);
 }
 
 

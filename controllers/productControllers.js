@@ -16,9 +16,10 @@ module.exports.createProduct = async (req, res) => {
         const product = new Product(fields);
 
         if (files.photo) {
-            console.log(files.photo)
+            //console.log(files.photo)
             //console.log("From files.photo " + files.photo.filepath)
             fs.readFile(files.photo.filepath, (err, data) => {
+                if (err) console.log("Error message" + err.message);
                 if (err) return res.status(400).send("Problem in file data");
                 product.photo.data = data;
                 product.photo.contentType = files.photo.mimetype;
@@ -54,7 +55,32 @@ module.exports.getProducts = async (req, res) => {
 
 //get-product by ID
 module.exports.getProductById = async (req, res) => {
+    const productId = req.params.id;
+    let product;
+    try {
+        product = await Product.findById(productId)
+            .select({ photo: 0 })
+            .populate('category', 'name');
+        return res.status(200).send(product);
+    }
+    catch {
+        if (!product) return res.status(404).send("Not Found");
+    }
+}
 
+module.exports.getPhoto = async (req, res) => {
+    const productId = req.params.id;
+    let product;
+    try {
+        product = await Product.findById(productId)
+            .select('photo')
+            .populate('category', 'name');
+        res.set('Content-Type', product.photo.contentType);
+        return res.status(200).send(product.photo.data);
+    }
+    catch {
+        if (!product) return res.status(404).send("Not Found");
+    }
 }
 
 //update-product by ID

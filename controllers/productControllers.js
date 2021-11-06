@@ -131,8 +131,30 @@ module.exports.filterProducts = async (req, res) => {
     let sortBy = req.body.sortBy ? req.body.sortBy : '_id';
     let limit = req.body.limit ? parseInt(req.body.limit) : 10;
     let skip = parseInt(req.body.skip);
+    let filters = req.body.filters;
+    let args = {}
+    for (let key in filters) {
+        if (filters[key].length > 0) {
+            if (key === 'price') {
+                args['price'] = {
+                    $gte: filters['price'][0],
+                    $lte: filters['price'][1]
+                }
+                //console.log(args)
+            }
 
-    const products = await Product.find()
+            if (key === 'category') {
+                args['category'] = {
+                    $in: filters['category']
+                }
+                //console.log(args)
+
+            }
+        }
+    }
+
+
+    const products = await Product.find(args)
         .select({ photo: 0 })
         .populate('category', 'name')
         .sort({ [sortBy]: order })

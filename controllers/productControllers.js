@@ -19,7 +19,7 @@ module.exports.createProduct = async (req, res) => {
             //console.log(files.photo)
             //console.log("From files.photo " + files.photo.filepath)
             fs.readFile(files.photo.filepath, (err, data) => {
-                if (err) console.log("Error message" + err.message);
+                //if (err) console.log("Error message" + err.message);
                 if (err) return res.status(400).send("Problem in file data");
                 product.photo.data = data;
                 product.photo.contentType = files.photo.mimetype;
@@ -98,7 +98,7 @@ module.exports.updateProductById = async (req, res) => {
             //console.log(files.photo)
             //console.log("From files.photo " + files.photo.filepath)
             fs.readFile(files.photo.filepath, (err, data) => {
-                if (err) console.log("Error message" + err.message);
+                //if (err) console.log("Error message" + err.message);
                 if (err) return res.status(400).send("Problem in file data");
                 product.photo.data = data;
                 product.photo.contentType = files.photo.mimetype;
@@ -148,7 +148,6 @@ module.exports.filterProducts = async (req, res) => {
                     $in: filters['category']
                 }
                 //console.log(args)
-
             }
         }
     }
